@@ -233,14 +233,6 @@ func (p *process) doRequest(url string) ([]byte, error) {
 		return nil, err
 	}
 
-	if p.Client.config != nil && p.Client.config.Dump {
-		dump, err := httputil.DumpRequestOut(req, true)
-		if err != nil {
-			return nil, err
-		}
-		p.Client.config.Logger.LogRequest(p.Request.Method, dump)
-	}
-
 	if p.Client.Username != "" && p.Client.Password != "" {
 		req.SetBasicAuth(p.Client.Username, p.Client.Password)
 	}
@@ -253,6 +245,14 @@ func (p *process) doRequest(url string) ([]byte, error) {
 		req.Header.Add("SOAPAction", p.SoapAction)
 	}
 
+	if p.Client.config != nil && p.Client.config.Dump {
+		dump, err := httputil.DumpRequestOut(req, true)
+		if err != nil {
+			return nil, err
+		}
+		p.Client.config.Logger.LogRequest(p.Request.Method, dump)
+	}
+	
 	resp, err := p.httpClient().Do(req)
 	if err != nil {
 		return nil, err
