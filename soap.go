@@ -182,7 +182,7 @@ func (c *Client) Do(req *Request) (res *Response, err error) {
 	}
 	
 	if p.MessagePart == "" {
-		p.MessagePart = p.Request.Method
+		p.MessagePart = p.Request.Method + "Request"
 	}
 
 	p.Payload, err = xml.MarshalIndent(p, "", "    ")
