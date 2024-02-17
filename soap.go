@@ -228,7 +228,6 @@ type process struct {
 // doRequest makes new request to the server using the c.Method, c.URL and the body.
 // body is enveloped in Do method
 func (p *process) doRequest(url string) ([]byte, error) {
-	fmt.Printf("doing request with url %v\n", url)
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(p.Payload))
 	if err != nil {
 		return nil, err
@@ -242,8 +241,7 @@ func (p *process) doRequest(url string) ([]byte, error) {
 
 	req.Header.Add("Content-Type", "text/xml;charset=UTF-8")
 	req.Header.Add("Accept", "text/xml")
-	host := strings.Split(url, "/")[2]
-	fmt.Printf("setting host to %v", host)
+	host := strings.TrimSuffix(strings.Split(url, "/")[2], ":443")
 	req.Host = host
 	req.Header.Set("Host", host)
 
