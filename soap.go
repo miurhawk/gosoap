@@ -241,7 +241,9 @@ func (p *process) doRequest(url string) ([]byte, error) {
 
 	req.Header.Add("Content-Type", "text/xml;charset=UTF-8")
 	req.Header.Add("Accept", "text/xml")
-	req.Header.Add("Host", url)
+	host := strings.Split(url, "/")[2]
+	req.Host = host
+
 	if p.SoapAction != "" {
 		req.Header.Add("SOAPAction", p.SoapAction)
 	}
